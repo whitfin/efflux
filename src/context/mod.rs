@@ -3,7 +3,9 @@
 //! This module exposes an arbitrarily typed map to be used as a job context
 //! for all Hadoop stages. It can be used to lookup different types and store
 //! state across executions of a task (although note that it's local to each
-//! mapper/reduce process).
+//! mapper/reduce process). Authors of `Mapper` and `Reducer` implementations
+//! shouldn't need to store state here as they have mutable access to their
+//! struct values.
 //!
 //! Values can be references as `mut` when required, as there should be only
 //! as single thread owning a `Context` at any given time. An example of
