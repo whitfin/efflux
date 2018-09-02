@@ -1,0 +1,16 @@
+[package]
+name = "efflux"
+version = "0.1.0"
+authors = ["Isaac Whitfield <iw@whitfin.io>"]
+description = "Easy MapReduce and Hadoop Streaming interfaces in Rust"
+repository = "https://github.com/whitfin/efflux"
+keywords = ["data", "hadoop", "hdfs", "mapreduce", "streaming"]
+categories = ["api-bindings", "concurrency", "filesystem", "text-processing"]
+readme = "README.md"
+license = "MIT"
+
+[badges]
+appveyor = { repository = "whitfin/efflux" }
+travis-ci = { repository = "whitfin/efflux" }
+
+[dependencies]
