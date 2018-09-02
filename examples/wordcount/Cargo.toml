@@ -1,0 +1,18 @@
+[package]
+name = "efflux_example_wordcount"
+version = "0.1.0"
+authors = ["Isaac Whitfield <iw@whitfin.io>"]
+
+[dependencies]
+efflux = { path = "../../" }
+regex = "1.0"
+
+[[bin]]
+doc = false
+name = "wordcount_mapper"
+path = "src/mapper.rs"
+
+[[bin]]
+doc = false
+name = "wordcount_reducer"
+path = "src/reducer.rs"
