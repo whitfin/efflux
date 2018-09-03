@@ -1,0 +1,23 @@
+[package]
+name = "{{ project_name }}"
+version = "{{ project_version }}"
+
+[dependencies]
+efflux = { git = "git@github.com:whitfin/efflux" }
+
+[[bin]]
+doc = false
+name = "{{ project_name }}_mapper"
+path = "src/mapper.rs"
+{% if reducer %}
+[[bin]]
+doc = false
+name = "{{ project_name }}_reducer"
+path = "src/reducer.rs"
+{% endif -%}
+{% if combiner %}
+[[bin]]
+doc = false
+name = "{{ project_name }}_combiner"
+path = "src/combiner.rs"
+{% endif -%}

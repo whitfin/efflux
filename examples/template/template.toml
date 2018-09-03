@@ -1,0 +1,34 @@
+name = "Efflux Quickstart"
+description = "Quickstart template for Efflux"
+kickstart_version = 1
+
+cleanup = [
+    { name = "combiner", value = false, paths = [
+        "{{ project_name }}/src/combiner.rs"
+    ] },
+    { name = "reducer", value = false, paths = [
+        "{{ project_name }}/src/combiner.rs",
+        "{{ project_name }}/src/reducer.rs"
+    ] },
+]
+
+[[variables]]
+name = "project_name"
+default = "my_project"
+prompt = "Enter the name of your project"
+
+[[variables]]
+name = "project_version"
+default = "0.1.0"
+prompt = "Enter the base version of your project"
+
+[[variables]]
+name = "reducer"
+default = true
+prompt = "Do you need to include a reducer in this project?"
+
+[[variables]]
+name = "combiner"
+default = false
+prompt = "Do you need to include a combiner in this project?"
+only_if = { name = "reducer", value = true }
