@@ -12,5 +12,3 @@ license = "MIT"
 [badges]
 appveyor = { repository = "whitfin/efflux" }
 travis-ci = { repository = "whitfin/efflux" }
-
-[dependencies]
