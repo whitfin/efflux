@@ -16,14 +16,14 @@ struct {{project_struct}};
 /// An empty implementation of the `Mapper` trait.
 impl Mapper for {{project_struct}} {
     fn setup(&mut self, _ctx: &mut Context) {
-        /// Carry out any setup required in this block.
+        // Carry out any setup required in this block.
     }
 
     fn map(&mut self, key: usize, val: String, ctx: &mut Context) {
-        /// Carry out the main mapping tasks inside this block.
+        // Carry out the main mapping tasks inside this block.
     }
 
     fn cleanup(&mut self, _ctx: &mut Context) {
-        /// Carry out any cleanup required in this block.
+        // Carry out any cleanup required in this block.
     }
 }

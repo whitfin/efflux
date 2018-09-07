@@ -16,14 +16,14 @@ struct {{ project_struct }};
 /// An empty implementation of the `Reducer` trait.
 impl Reducer for {{ project_struct }} {
     fn setup(&mut self, _ctx: &mut Context) {
-        /// Carry out any setup required in this block.
+        // Carry out any setup required in this block.
     }
 
     fn reduce(&mut self, key: String, values: Vec<String>, ctx: &mut Context) {
-        /// Carry out the main reducer tasks inside this block.
+        // Carry out the main reducer tasks inside this block.
     }
 
     fn cleanup(&mut self, _ctx: &mut Context) {
-        /// Carry out any cleanup required in this block.
+        // Carry out any cleanup required in this block.
     }
 }
