@@ -97,3 +97,58 @@ where
         self.0.reduce(key, values, ctx);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use context::Contextual;
+    use io::Lifecycle;
+
+    #[test]
+    fn test_reducer_lifecycle() {
+        let mut ctx = Context::new();
+        let mut reducer = ReducerLifecycle(TestReducer);
+
+        reducer.on_start(&mut ctx);
+
+        {
+            reducer.on_entry("first\tone".into(), &mut ctx);
+            reducer.on_entry("first\ttwo".into(), &mut ctx);
+            reducer.on_entry("first\tthree".into(), &mut ctx);
+            reducer.on_entry("second\tone".into(), &mut ctx);
+            reducer.on_entry("second\ttwo".into(), &mut ctx);
+            reducer.on_entry("second\tthree".into(), &mut ctx);
+
+            let pair = ctx.get::<TestPair>();
+
+            assert!(pair.is_some());
+
+            let pair = pair.unwrap();
+
+            assert_eq!(pair.0, "first");
+            assert_eq!(pair.1, vec!["one", "two", "three"]);
+        }
+
+        reducer.on_end(&mut ctx);
+
+        let pair = ctx.get::<TestPair>();
+
+        assert!(pair.is_some());
+
+        let pair = pair.unwrap();
+
+        assert_eq!(pair.0, "second");
+        assert_eq!(pair.1, vec!["one", "two", "three"]);
+    }
+
+    struct TestPair(String, Vec<String>);
+    struct TestReducer;
+
+    impl Contextual for TestPair {}
+
+    impl Reducer for TestReducer {
+        fn reduce(&mut self, key: String, values: Vec<String>, ctx: &mut Context) {
+            ctx.insert(TestPair(key, values));
+        }
+    }
+}

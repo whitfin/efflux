@@ -155,3 +155,65 @@ impl Context {
         println!("{}{}{}", key, out, val);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_context_creation() {
+        let ctx = Context::new();
+
+        assert!(ctx.get::<Configuration>().is_some());
+        assert!(ctx.get::<Delimiters>().is_some());
+    }
+
+    #[test]
+    fn test_context_insertion() {
+        let mut ctx = Context::new();
+        let val = TestStruct { inner: 0 };
+
+        ctx.insert(val);
+
+        assert!(ctx.get::<TestStruct>().is_some());
+    }
+
+    #[test]
+    fn test_mutable_references() {
+        let mut ctx = Context::new();
+        let val = TestStruct { inner: 0 };
+
+        ctx.insert(val);
+
+        {
+            let mref = ctx.get_mut::<TestStruct>();
+            assert!(mref.is_some());
+            mref.unwrap().inner = 1;
+        }
+
+        let iref = ctx.get::<TestStruct>();
+
+        assert!(iref.is_some());
+        assert_eq!(iref.unwrap().inner, 1);
+    }
+
+    #[test]
+    fn test_taking_values() {
+        let mut ctx = Context::new();
+        let val = TestStruct { inner: 0 };
+
+        ctx.insert(val);
+
+        let take = ctx.take::<TestStruct>();
+        assert!(take.is_some());
+
+        let take = ctx.take::<TestStruct>();
+        assert!(take.is_none());
+    }
+
+    struct TestStruct {
+        inner: usize,
+    }
+
+    impl Contextual for TestStruct {}
+}

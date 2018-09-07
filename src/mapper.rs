@@ -56,3 +56,51 @@ where
         self.0.map(offset, line, ctx);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use context::Contextual;
+    use io::Lifecycle;
+
+    #[test]
+    fn test_mapper_lifecycle() {
+        let mut ctx = Context::new();
+        let mut mapper = MapperLifecycle(TestMapper);
+
+        mapper.on_start(&mut ctx);
+
+        {
+            let mut vet = |input: &str, expected: usize| {
+                mapper.on_entry(input.into(), &mut ctx);
+
+                let pair = ctx.get::<TestPair>();
+
+                assert!(pair.is_some());
+
+                let pair = pair.unwrap();
+
+                assert_eq!(pair.0, expected);
+                assert_eq!(pair.1, input);
+            };
+
+            vet("first_input_line", 18);
+            vet("second_input_line", 37);
+            vet("third_input_line", 55);
+        }
+
+        mapper.on_end(&mut ctx);
+    }
+
+    struct TestPair(usize, String);
+
+    impl Contextual for TestPair {}
+
+    struct TestMapper;
+
+    impl Mapper for TestMapper {
+        fn map(&mut self, key: usize, val: String, ctx: &mut Context) {
+            ctx.insert(TestPair(key, val));
+        }
+    }
+}
