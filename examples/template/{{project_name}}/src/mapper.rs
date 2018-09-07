@@ -19,7 +19,7 @@ impl Mapper for {{project_struct}} {
         // Carry out any setup required in this block.
     }
 
-    fn map(&mut self, key: usize, val: String, ctx: &mut Context) {
+    fn map(&mut self, _key: usize, _val: String, _ctx: &mut Context) {
         // Carry out the main mapping tasks inside this block.
     }
 

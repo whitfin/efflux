@@ -19,7 +19,7 @@ impl Reducer for {{ project_struct }} {
         // Carry out any setup required in this block.
     }
 
-    fn reduce(&mut self, key: String, values: Vec<String>, ctx: &mut Context) {
+    fn reduce(&mut self, _key: String, _values: Vec<String>, _ctx: &mut Context) {
         // Carry out the main reducer tasks inside this block.
     }
 
