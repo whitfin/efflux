@@ -22,4 +22,35 @@ use efflux::prelude::*;
 
 ## Usage
 
-Coming soon, as things are currently in _flux_.
+Efflux comes with a handy template to help generate new projects, using the [kickstart](https://github.com/Keats/kickstart) tool. You can simply use the commands below and follow the prompt to generate a new project skeleton:
+
+```shell
+# install kickstart
+$ cargo install kickstart
+
+# download the template directly from the latest GitHub branch
+$ svn export https://github.com/whitfin/efflux/trunk/examples/template ~/.kickstart/efflux/
+
+# create a project from the template
+$ kickstart ~/.kickstart/efflux
+```
+
+If you'd rather not use the templating tool, you can always work from the examples found in this repository. A good place to start is the traditional [wordcount](examples/wordcount) example.
+
+## Testing
+
+Testing your binaries is actually fairly simple, as you can simulate the Hadoop phases using a basic UNIX pipeline. The following example replicates the Hadoop job flow and generates output that matches a job executed with Hadoop itself:
+
+```shell
+# example Hadoop task invocation
+$ hadoop jar hadoop-streaming-2.8.2.jar \
+    -input <INPUT> \
+    -output <OUTPUT> \
+    -mapper <MAPPER> \
+    -reducer <REDUCER>
+
+# example simulation run via UNIX utilities
+$ cat <INPUT> | <MAPPER> | sort -k1,1 | <REDUCER> > <OUTPUT>
+```
+
+This can be tested using the [wordcount](examples/wordcount) example to confirm that the outputs are indeed the same. There may be some cases where output differs, but it should be sufficient for many cases.
