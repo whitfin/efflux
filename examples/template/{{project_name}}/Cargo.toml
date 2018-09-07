@@ -3,7 +3,7 @@ name = "{{ project_name }}"
 version = "{{ project_version }}"
 
 [dependencies]
-efflux = { git = "git@github.com:whitfin/efflux" }
+efflux = "1.0"
 
 [[bin]]
 doc = false
