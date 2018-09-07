@@ -1,6 +1,6 @@
 [package]
 name = "efflux"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Isaac Whitfield <iw@whitfin.io>"]
 description = "Easy MapReduce and Hadoop Streaming interfaces in Rust"
 repository = "https://github.com/whitfin/efflux"
