@@ -38,7 +38,9 @@ where
 
     // read all inputs, and fire the entry hooks
     for line in BufReader::new(stdin_lock).lines() {
-        lifecycle.on_entry(line.expect("hit invalid input"), &mut ctx);
+        if let Ok(line) = line {
+            lifecycle.on_entry(line, &mut ctx);
+        }
     }
 
     // fire the finalization hooks
