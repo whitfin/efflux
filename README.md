@@ -28,11 +28,8 @@ Efflux comes with a handy template to help generate new projects, using the [kic
 # install kickstart
 $ cargo install kickstart
 
-# download the template directly from the latest GitHub branch
-$ svn export https://github.com/whitfin/efflux/trunk/examples/template ~/.kickstart/efflux/
-
 # create a project from the template
-$ kickstart ~/.kickstart/efflux
+$ kickstart -s examples/template https://github.com/whitfin/efflux
 ```
 
 If you'd rather not use the templating tool, you can always work from the examples found in this repository. A good place to start is the traditional [wordcount](examples/wordcount) example.
