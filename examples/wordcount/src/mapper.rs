@@ -7,19 +7,19 @@ use regex::Regex;
 
 fn main() {
     // simply run the mapping phase with our mapper
-    efflux::run_mapper(WorcountMapper::new());
+    efflux::run_mapper(WordcountMapper::new());
 }
 
 /// Simple struct to represent a word counter mapper.
 ///
 /// Contains several internal patterns to use when processing
 /// the input text, to avoid re-compilation of Regex.
-struct WorcountMapper {
+struct WordcountMapper {
     multi_spaces: Regex,
     punc_matcher: Regex,
 }
 
-impl WorcountMapper {
+impl WordcountMapper {
     /// Creates a new `WordcountMapper` with pre-compiled `Regex`.
     pub fn new() -> Self {
         Self {
@@ -32,7 +32,7 @@ impl WorcountMapper {
 }
 
 // Mapping stage implementation.
-impl Mapper for WorcountMapper {
+impl Mapper for WordcountMapper {
     /// Mapping implementation for the word counter example.
     ///
     /// The input value is split into words using the internal patterns,
