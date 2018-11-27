@@ -13,12 +13,12 @@ $ hadoop jar hadoop-streaming-2.8.2.jar \
     -input ./data/input.txt \
     -output ./output \
     -mapper ./target/release/wordcount_mapper \
-    -reducer ./target/debug/wordcount_reducer
+    -reducer ./target/release/wordcount_reducer
 
 # run with Unix command shimming
 $ cat ./data/input.txt | \
     ./target/release/wordcount_mapper | \
     sort -k1,1 | \
-    ./target/debug/wordcount_reducer \
+    ./target/release/wordcount_reducer \
     > ./output/output.txt
 ```
