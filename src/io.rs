@@ -15,7 +15,7 @@ pub trait Lifecycle {
     fn on_start(&mut self, _ctx: &mut Context) {}
 
     /// Entry hook for the IO stream to handle input values.
-    fn on_entry(&mut self, _line: String, _ctx: &mut Context) {}
+    fn on_entry(&mut self, _input: String, _ctx: &mut Context) {}
 
     /// Finalization hook for the IO stream.
     fn on_end(&mut self, _ctx: &mut Context) {}
@@ -37,9 +37,9 @@ where
     lifecycle.on_start(&mut ctx);
 
     // read all inputs, and fire the entry hooks
-    for line in BufReader::new(stdin_lock).lines() {
-        if let Ok(line) = line {
-            lifecycle.on_entry(line, &mut ctx);
+    for input in BufReader::new(stdin_lock).lines() {
+        if let Ok(input) = input {
+            lifecycle.on_entry(input, &mut ctx);
         }
     }
 

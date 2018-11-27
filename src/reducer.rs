@@ -48,13 +48,13 @@ where
     /// Processes each entry by buffering sequential key entries into the
     /// internal group. Once the key changes the prior group is passed off
     /// into the actual `Reducer` trait, and the group is reset.
-    fn on_entry(&mut self, line: String, ctx: &mut Context) {
+    fn on_entry(&mut self, input: String, ctx: &mut Context) {
         let (key, value) = {
             // grab the delimiters from the context
             let delim = ctx.get::<Delimiters>().unwrap();
 
             // split on the input delimiter
-            let mut split = line.splitn(2, delim.input());
+            let mut split = input.splitn(2, delim.input());
 
             // grab key/value, default to empty string
             let key = split.next().unwrap_or("").to_owned();

@@ -20,8 +20,8 @@ pub trait Mapper {
     /// The default implementation is to simply emit each key/value pair as they
     /// are received, without any changes. As such, this is where most developers
     /// will immediately begin to change things.
-    fn map(&mut self, key: usize, val: String, ctx: &mut Context) {
-        ctx.write(key, val);
+    fn map(&mut self, key: usize, value: String, ctx: &mut Context) {
+        ctx.write(key, value);
     }
 
     /// Cleanup handler for the current `Mapper`.
@@ -47,13 +47,13 @@ where
     /// byte offset being provided as the key (this follows the implementation
     /// provided in the Hadoop MapReduce Java interfaces, but it's unclear as
     /// to whether this is the desired default behaviour here).
-    fn on_entry(&mut self, line: String, ctx: &mut Context) {
+    fn on_entry(&mut self, input: String, ctx: &mut Context) {
         let offset = {
             // grabs the offset from the context, and shifts the offset
-            ctx.get_mut::<Offset>().unwrap().shift(line.len() + 2)
+            ctx.get_mut::<Offset>().unwrap().shift(input.len() + 2)
         };
 
-        self.0.map(offset, line, ctx);
+        self.0.map(offset, input, ctx);
     }
 }
 
