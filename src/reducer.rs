@@ -43,6 +43,7 @@ where
     /// Creates all required state for the lifecycle.
     fn on_start(&mut self, ctx: &mut Context) {
         ctx.insert(Group::new());
+        self.0.setup(ctx);
     }
 
     /// Processes each entry by buffering sequential key entries into the
@@ -95,6 +96,7 @@ where
 
         // reduce the last batches
         self.0.reduce(key, values, ctx);
+        self.0.cleanup(ctx);
     }
 }
 

@@ -41,6 +41,7 @@ where
     /// Creates all required state for the lifecycle.
     fn on_start(&mut self, ctx: &mut Context) {
         ctx.insert(Offset::new());
+        self.0.setup(ctx);
     }
 
     /// Passes each entry through to the mapper as a value, with the current
@@ -54,6 +55,11 @@ where
         };
 
         self.0.map(offset, input, ctx);
+    }
+
+    /// Finalizes the lifecycle by calling cleanup.
+    fn on_end(&mut self, ctx: &mut Context) {
+        self.0.cleanup(ctx);
     }
 }
 
