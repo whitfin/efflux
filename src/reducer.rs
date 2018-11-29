@@ -30,6 +30,17 @@ pub trait Reducer {
     fn cleanup(&mut self, _ctx: &mut Context) {}
 }
 
+/// Enables raw functions to act as `Reducer` types.
+impl<R> Reducer for R
+where
+    R: FnMut(String, Vec<String>, &mut Context),
+{
+    /// Reduction handler by passing through the values to the inner closure.
+    fn reduce(&mut self, key: String, value: Vec<String>, ctx: &mut Context) {
+        self(key, value, ctx)
+    }
+}
+
 /// Lifecycle structure to represent a reduction.
 pub struct ReducerLifecycle<R>(pub R)
 where

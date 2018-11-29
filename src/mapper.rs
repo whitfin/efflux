@@ -28,6 +28,17 @@ pub trait Mapper {
     fn cleanup(&mut self, _ctx: &mut Context) {}
 }
 
+/// Enables raw functions to act as `Mapper` types.
+impl<M> Mapper for M
+where
+    M: FnMut(usize, String, &mut Context),
+{
+    /// Mapping handler by passing through the values to the inner closure.
+    fn map(&mut self, key: usize, value: String, ctx: &mut Context) {
+        self(key, value, ctx)
+    }
+}
+
 /// Lifecycle structure to represent a mapping.
 pub struct MapperLifecycle<M>(pub M)
 where
