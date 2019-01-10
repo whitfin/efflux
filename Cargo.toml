@@ -1,6 +1,6 @@
 [package]
 name = "efflux"
-version = "1.1.0"
+version = "1.2.0" # remember to update html_root_url
 authors = ["Isaac Whitfield <iw@whitfin.io>"]
 description = "Easy MapReduce and Hadoop Streaming interfaces in Rust"
 repository = "https://github.com/whitfin/efflux"
