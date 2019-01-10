@@ -3,8 +3,8 @@
 //! This module offers the `Mapper` trait, which allows a developer
 //! to easily create a mapping stage due to the sane defaults. Also
 //! offered is the `MapperLifecycle` binding for use as an IO stage.
-use context::{Context, Offset};
-use io::Lifecycle;
+use crate::context::{Context, Offset};
+use crate::io::Lifecycle;
 
 /// Trait to represent the mapping stage of MapReduce.
 ///
@@ -77,8 +77,8 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use context::Contextual;
-    use io::Lifecycle;
+    use crate::context::Contextual;
+    use crate::io::Lifecycle;
 
     #[test]
     fn test_mapper_lifecycle() {

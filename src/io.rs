@@ -2,8 +2,10 @@
 //!
 //! Provides lifecycles for Hadoop Streaming IO, to allow the rest
 //! of this crate to be a little more ignorant of how inputs flow.
-use context::Context;
-use std::io::{self, BufRead, BufReader};
+use bytelines::*;
+use std::io::{self, BufReader};
+
+use crate::context::Context;
 
 /// Lifecycle trait to allow hooking into IO streams.
 ///
@@ -36,10 +38,15 @@ where
     // fire the startup hooks
     lifecycle.on_start(&mut ctx);
 
-    // read all inputs, and fire the entry hooks
-    for input in BufReader::new(stdin_lock).lines() {
+    // read all inputs from stdin, and fire the entry hooks
+    for input in BufReader::new(stdin_lock).byte_lines().into_iter() {
+        // verify that the input line is valid
         if let Ok(input) = input {
-            lifecycle.on_entry(input, &mut ctx);
+            // parse a string value out of the incoming line
+            if let Ok(input) = String::from_utf8(input) {
+                // consume the input by passing to the lifecycle
+                lifecycle.on_entry(input, &mut ctx);
+            }
         }
     }
 

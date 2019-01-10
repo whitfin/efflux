@@ -8,7 +8,11 @@ keywords = ["data", "hadoop", "hdfs", "mapreduce", "streaming"]
 categories = ["api-bindings", "concurrency", "filesystem", "text-processing"]
 readme = "README.md"
 license = "MIT"
+edition = "2018"
 
 [badges]
 appveyor = { repository = "whitfin/efflux" }
 travis-ci = { repository = "whitfin/efflux" }
+
+[dependencies]
+bytelines = "2.2"

@@ -3,8 +3,8 @@
 //! This module offers the `Reducer` trait, which allows a developer
 //! to easily create a reduction stage due to the sane defaults. Also
 //! offered is the `ReducerLifecycle` binding for use as an IO stage.
-use context::{Context, Delimiters, Group};
-use io::Lifecycle;
+use crate::context::{Context, Delimiters, Group};
+use crate::io::Lifecycle;
 
 /// Trait to represent the reduction stage of MapReduce.
 ///
@@ -114,8 +114,8 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use context::Contextual;
-    use io::Lifecycle;
+    use crate::context::Contextual;
+    use crate::io::Lifecycle;
 
     #[test]
     fn test_reducer_lifecycle() {
