@@ -11,7 +11,7 @@ Efflux is available on [crates.io](https://crates.io/crates/efflux) as a library
 
 ```toml
 [dependencies]
-efflux = "1.1"
+efflux = "1.2"
 ```
 
 You can then gain access to everything relevant using the `prelude` module of Efflux:

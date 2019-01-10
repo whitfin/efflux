@@ -3,7 +3,7 @@ name = "{{ project_name }}"
 version = "{{ project_version }}"
 
 [dependencies]
-efflux = "1.1"
+efflux = "1.2"
 
 [[bin]]
 doc = false
