@@ -20,8 +20,8 @@ pub trait Mapper {
     /// The default implementation is to simply emit each key/value pair as they
     /// are received, without any changes. As such, this is where most developers
     /// will immediately begin to change things.
-    fn map(&mut self, key: usize, value: String, ctx: &mut Context) {
-        ctx.write(key, value);
+    fn map(&mut self, key: usize, value: Vec<u8>, ctx: &mut Context) {
+        ctx.write(key.to_string().as_bytes(), &value);
     }
 
     /// Cleanup handler for the current `Mapper`.
@@ -31,10 +31,10 @@ pub trait Mapper {
 /// Enables raw functions to act as `Mapper` types.
 impl<M> Mapper for M
 where
-    M: FnMut(usize, String, &mut Context),
+    M: FnMut(usize, Vec<u8>, &mut Context),
 {
     /// Mapping handler by passing through the values to the inner closure.
-    fn map(&mut self, key: usize, value: String, ctx: &mut Context) {
+    fn map(&mut self, key: usize, value: Vec<u8>, ctx: &mut Context) {
         self(key, value, ctx)
     }
 }
@@ -59,7 +59,7 @@ where
     /// byte offset being provided as the key (this follows the implementation
     /// provided in the Hadoop MapReduce Java interfaces, but it's unclear as
     /// to whether this is the desired default behaviour here).
-    fn on_entry(&mut self, input: String, ctx: &mut Context) {
+    fn on_entry(&mut self, input: Vec<u8>, ctx: &mut Context) {
         let offset = {
             // grabs the offset from the context, and shifts the offset
             ctx.get_mut::<Offset>().unwrap().shift(input.len() + 2)
@@ -88,8 +88,8 @@ mod tests {
         mapper.on_start(&mut ctx);
 
         {
-            let mut vet = |input: &str, expected: usize| {
-                mapper.on_entry(input.into(), &mut ctx);
+            let mut vet = |input: &[u8], expected: usize| {
+                mapper.on_entry(input.to_vec(), &mut ctx);
 
                 let pair = ctx.get::<TestPair>();
 
@@ -101,22 +101,22 @@ mod tests {
                 assert_eq!(pair.1, input);
             };
 
-            vet("first_input_line", 18);
-            vet("second_input_line", 37);
-            vet("third_input_line", 55);
+            vet(b"first_input_line", 18);
+            vet(b"second_input_line", 37);
+            vet(b"third_input_line", 55);
         }
 
         mapper.on_end(&mut ctx);
     }
 
-    struct TestPair(usize, String);
+    struct TestPair(usize, Vec<u8>);
 
     impl Contextual for TestPair {}
 
     struct TestMapper;
 
     impl Mapper for TestMapper {
-        fn map(&mut self, key: usize, val: String, ctx: &mut Context) {
+        fn map(&mut self, key: usize, val: Vec<u8>, ctx: &mut Context) {
             ctx.insert(TestPair(key, val));
         }
     }

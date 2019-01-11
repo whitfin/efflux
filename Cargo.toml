@@ -16,3 +16,4 @@ travis-ci = { repository = "whitfin/efflux" }
 
 [dependencies]
 bytelines = "2.2"
+twoway = "0.2"

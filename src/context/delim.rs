@@ -6,8 +6,8 @@ use super::conf::Configuration;
 /// this structure should be considered immutable.
 #[derive(Debug)]
 pub struct Delimiters {
-    input: String,
-    output: String,
+    input: Vec<u8>,
+    output: Vec<u8>,
 }
 
 impl Delimiters {
@@ -25,20 +25,20 @@ impl Delimiters {
 
         Self {
             // separators are optional, so default to a tab
-            input: conf.get(&input_key).unwrap_or("\t").to_owned(),
-            output: conf.get(&output_key).unwrap_or("\t").to_owned(),
+            input: conf.get(&input_key).unwrap_or("\t").as_bytes().to_vec(),
+            output: conf.get(&output_key).unwrap_or("\t").as_bytes().to_vec(),
         }
     }
 
     /// Returns a reference to the input delimiter.
     #[inline]
-    pub fn input(&self) -> &str {
+    pub fn input(&self) -> &[u8] {
         &self.input
     }
 
     /// Returns a reference to the output delimiter.
     #[inline]
-    pub fn output(&self) -> &str {
+    pub fn output(&self) -> &[u8] {
         &self.output
     }
 }
@@ -58,8 +58,8 @@ mod tests {
         let conf = Configuration::with_env(env.into_iter());
         let delim = Delimiters::new(&conf);
 
-        assert_eq!(delim.input(), ":");
-        assert_eq!(delim.output(), "|");
+        assert_eq!(delim.input(), b":");
+        assert_eq!(delim.output(), b"|");
     }
 
     #[test]
@@ -73,8 +73,8 @@ mod tests {
         let conf = Configuration::with_env(env.into_iter());
         let delim = Delimiters::new(&conf);
 
-        assert_eq!(delim.input(), ":");
-        assert_eq!(delim.output(), "|");
+        assert_eq!(delim.input(), b":");
+        assert_eq!(delim.output(), b"|");
     }
 
     #[test]
@@ -84,7 +84,7 @@ mod tests {
         let conf = Configuration::with_env(env.into_iter());
         let delim = Delimiters::new(&conf);
 
-        assert_eq!(delim.input(), "\t");
-        assert_eq!(delim.output(), "\t");
+        assert_eq!(delim.input(), b"\t");
+        assert_eq!(delim.output(), b"\t");
     }
 }

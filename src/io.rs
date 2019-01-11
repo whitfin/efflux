@@ -17,7 +17,7 @@ pub trait Lifecycle {
     fn on_start(&mut self, _ctx: &mut Context) {}
 
     /// Entry hook for the IO stream to handle input values.
-    fn on_entry(&mut self, _input: String, _ctx: &mut Context) {}
+    fn on_entry(&mut self, _input: Vec<u8>, _ctx: &mut Context) {}
 
     /// Finalization hook for the IO stream.
     fn on_end(&mut self, _ctx: &mut Context) {}
@@ -40,13 +40,8 @@ where
 
     // read all inputs from stdin, and fire the entry hooks
     for input in BufReader::new(stdin_lock).byte_lines().into_iter() {
-        // verify that the input line is valid
         if let Ok(input) = input {
-            // parse a string value out of the incoming line
-            if let Ok(input) = String::from_utf8(input) {
-                // consume the input by passing to the lifecycle
-                lifecycle.on_entry(input, &mut ctx);
-            }
+            lifecycle.on_entry(input, &mut ctx);
         }
     }
 

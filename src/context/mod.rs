@@ -54,7 +54,7 @@
 //! represents the job configuration provided by Hadoop.
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
-use std::fmt::Display;
+use std::io::{self, Write};
 
 mod conf;
 mod delim;
@@ -146,13 +146,19 @@ impl Context {
     }
 
     /// Writes a key/value pair to the stage output.
-    pub fn write<K, V>(&mut self, key: K, val: V)
-    where
-        K: Display,
-        V: Display,
-    {
+    pub fn write(&mut self, key: &[u8], val: &[u8]) {
+        // grab a reference to the context output delimiters
         let out = self.get::<Delimiters>().unwrap().output();
-        println!("{}{}{}", key, out, val);
+
+        // lock the stdout buffer
+        let stdout = io::stdout();
+        let mut lock = stdout.lock();
+
+        // write the pair and newline
+        lock.write_all(key).unwrap();
+        lock.write_all(out).unwrap();
+        lock.write_all(val).unwrap();
+        lock.write_all(b"\n").unwrap();
     }
 }
 
