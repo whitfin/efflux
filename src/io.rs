@@ -17,7 +17,7 @@ pub trait Lifecycle {
     fn on_start(&mut self, _ctx: &mut Context) {}
 
     /// Entry hook for the IO stream to handle input values.
-    fn on_entry(&mut self, _input: Vec<u8>, _ctx: &mut Context) {}
+    fn on_entry(&mut self, _input: &[u8], _ctx: &mut Context) {}
 
     /// Finalization hook for the IO stream.
     fn on_end(&mut self, _ctx: &mut Context) {}
@@ -38,11 +38,12 @@ where
     // fire the startup hooks
     lifecycle.on_start(&mut ctx);
 
+    // create a line reader used to avoid vec allocations
+    let mut lines = BufReader::new(stdin_lock).byte_lines();
+
     // read all inputs from stdin, and fire the entry hooks
-    for input in BufReader::new(stdin_lock).byte_lines().into_iter() {
-        if let Ok(input) = input {
-            lifecycle.on_entry(input, &mut ctx);
-        }
+    while let Some(Ok(input)) = lines.next() {
+        lifecycle.on_entry(input, &mut ctx);
     }
 
     // fire the finalization hooks

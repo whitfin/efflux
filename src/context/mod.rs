@@ -54,16 +54,15 @@
 //! represents the job configuration provided by Hadoop.
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
+use std::fmt::Display;
 use std::io::{self, Write};
 
 mod conf;
 mod delim;
-mod group;
 mod offset;
 
 pub use self::conf::Configuration;
 pub use self::delim::Delimiters;
-pub use self::group::Group;
 pub use self::offset::Offset;
 
 /// Marker trait to represent types which can be added to a `Context`.
@@ -72,7 +71,6 @@ pub trait Contextual: Any {}
 // all internal contextual types
 impl Contextual for Configuration {}
 impl Contextual for Delimiters {}
-impl Contextual for Group {}
 impl Contextual for Offset {}
 
 /// Context structure to represent a Hadoop job context.
@@ -160,6 +158,18 @@ impl Context {
         lock.write_all(val).unwrap();
         lock.write_all(b"\n").unwrap();
     }
+
+    /// Writes a key/value formatted pair to the stage output.
+    ///
+    /// This is a simple sugar API around `write` which allows callers to
+    /// provide a type which implements `Display` to serialize automatically.
+    pub fn write_fmt<K, V>(&mut self, key: K, val: V)
+    where
+        K: Display,
+        V: Display,
+    {
+        self.write(key.to_string().as_bytes(), val.to_string().as_bytes());
+    }
 }
 
 #[cfg(test)]
@@ -177,7 +187,7 @@ mod tests {
     #[test]
     fn test_context_insertion() {
         let mut ctx = Context::new();
-        let val = TestStruct { inner: 0 };
+        let val = TestStruct(0);
 
         ctx.insert(val);
 
@@ -187,26 +197,26 @@ mod tests {
     #[test]
     fn test_mutable_references() {
         let mut ctx = Context::new();
-        let val = TestStruct { inner: 0 };
+        let val = TestStruct(0);
 
         ctx.insert(val);
 
         {
             let mref = ctx.get_mut::<TestStruct>();
             assert!(mref.is_some());
-            mref.unwrap().inner = 1;
+            mref.unwrap().0 = 1;
         }
 
         let iref = ctx.get::<TestStruct>();
 
         assert!(iref.is_some());
-        assert_eq!(iref.unwrap().inner, 1);
+        assert_eq!(iref.unwrap().0, 1);
     }
 
     #[test]
     fn test_taking_values() {
         let mut ctx = Context::new();
-        let val = TestStruct { inner: 0 };
+        let val = TestStruct(0);
 
         ctx.insert(val);
 
@@ -217,9 +227,6 @@ mod tests {
         assert!(take.is_none());
     }
 
-    struct TestStruct {
-        inner: usize,
-    }
-
+    struct TestStruct(usize);
     impl Contextual for TestStruct {}
 }
