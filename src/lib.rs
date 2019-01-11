@@ -28,7 +28,7 @@ pub fn run_mapper<M>(mapper: M)
 where
     M: Mapper + 'static,
 {
-    run_lifecycle(MapperLifecycle(mapper));
+    run_lifecycle(MapperLifecycle::new(mapper));
 }
 
 /// Executes a `Reducer` against the current `stdin`.
@@ -36,7 +36,7 @@ pub fn run_reducer<R>(reducer: R)
 where
     R: Reducer + 'static,
 {
-    run_lifecycle(ReducerLifecycle(reducer));
+    run_lifecycle(ReducerLifecycle::new(reducer));
 }
 
 // prelude module

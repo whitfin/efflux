@@ -42,9 +42,23 @@ where
 }
 
 /// Lifecycle structure to represent a reduction.
-pub struct ReducerLifecycle<R>(pub R)
+pub(crate) struct ReducerLifecycle<R>
 where
-    R: Reducer;
+    R: Reducer,
+{
+    reducer: R,
+}
+
+/// Basic creation for `ReducerLifecycle`
+impl<R> ReducerLifecycle<R>
+where
+    R: Reducer,
+{
+    /// Constructs a new `ReducerLifecycle` instance.
+    pub(crate) fn new(reducer: R) -> Self {
+        Self { reducer }
+    }
+}
 
 /// `Lifecycle` implementation for the reduction stage.
 impl<R> Lifecycle for ReducerLifecycle<R>
@@ -54,7 +68,7 @@ where
     /// Creates all required state for the lifecycle.
     fn on_start(&mut self, ctx: &mut Context) {
         ctx.insert(Group::new());
-        self.0.setup(ctx);
+        self.reducer.setup(ctx);
     }
 
     /// Processes each entry by buffering sequential key entries into the
@@ -99,7 +113,7 @@ where
         };
 
         // reduce the key and value group
-        self.0.reduce(key, values, ctx);
+        self.reducer.reduce(key, values, ctx);
     }
 
     /// Finalizes the lifecycle by emitting any leftover pairs.
@@ -108,8 +122,8 @@ where
         let (key, values) = { ctx.get_mut::<Group>().unwrap().reset(b"") };
 
         // reduce the last batches
-        self.0.reduce(key, values, ctx);
-        self.0.cleanup(ctx);
+        self.reducer.reduce(key, values, ctx);
+        self.reducer.cleanup(ctx);
     }
 }
 
@@ -122,7 +136,7 @@ mod tests {
     #[test]
     fn test_reducer_lifecycle() {
         let mut ctx = Context::new();
-        let mut reducer = ReducerLifecycle(TestReducer);
+        let mut reducer = ReducerLifecycle::new(TestReducer);
 
         reducer.on_start(&mut ctx);
 
@@ -159,7 +173,7 @@ mod tests {
     #[test]
     fn test_reducer_empty_values() {
         let mut ctx = Context::new();
-        let mut reducer = ReducerLifecycle(TestReducer);
+        let mut reducer = ReducerLifecycle::new(TestReducer);
 
         reducer.on_start(&mut ctx);
         reducer.on_entry(bv("key"), &mut ctx);

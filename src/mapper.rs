@@ -40,9 +40,23 @@ where
 }
 
 /// Lifecycle structure to represent a mapping.
-pub struct MapperLifecycle<M>(pub M)
+pub(crate) struct MapperLifecycle<M>
 where
-    M: Mapper;
+    M: Mapper,
+{
+    mapper: M,
+}
+
+/// Basic creation for `MapperLifecycle`
+impl<M> MapperLifecycle<M>
+where
+    M: Mapper,
+{
+    /// Constructs a new `MapperLifecycle` instance.
+    pub(crate) fn new(mapper: M) -> Self {
+        Self { mapper }
+    }
+}
 
 /// `Lifecycle` implementation for the mapping stage.
 impl<M> Lifecycle for MapperLifecycle<M>
@@ -52,7 +66,7 @@ where
     /// Creates all required state for the lifecycle.
     fn on_start(&mut self, ctx: &mut Context) {
         ctx.insert(Offset::new());
-        self.0.setup(ctx);
+        self.mapper.setup(ctx);
     }
 
     /// Passes each entry through to the mapper as a value, with the current
@@ -65,12 +79,12 @@ where
             ctx.get_mut::<Offset>().unwrap().shift(input.len() + 2)
         };
 
-        self.0.map(offset, input, ctx);
+        self.mapper.map(offset, input, ctx);
     }
 
     /// Finalizes the lifecycle by calling cleanup.
     fn on_end(&mut self, ctx: &mut Context) {
-        self.0.cleanup(ctx);
+        self.mapper.cleanup(ctx);
     }
 }
 
@@ -83,7 +97,7 @@ mod tests {
     #[test]
     fn test_mapper_lifecycle() {
         let mut ctx = Context::new();
-        let mut mapper = MapperLifecycle(TestMapper);
+        let mut mapper = MapperLifecycle::new(TestMapper);
 
         mapper.on_start(&mut ctx);
 
