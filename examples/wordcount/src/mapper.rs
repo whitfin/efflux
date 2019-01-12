@@ -37,11 +37,14 @@ impl Mapper for WordcountMapper {
     ///
     /// The input value is split into words using the internal patterns,
     /// and each word is then written to the context.
-    fn map(&mut self, _key: usize, value: String, ctx: &mut Context) {
+    fn map(&mut self, _key: usize, value: &[u8], ctx: &mut Context) {
         // skip empty
         if value.is_empty() {
             return;
         }
+
+        // parse into a string using the input bytes
+        let value = std::str::from_utf8(value).unwrap();
 
         // trim whitespaces
         let value = &value.trim();
@@ -55,7 +58,7 @@ impl Mapper for WordcountMapper {
         // split on spaces to find words
         for word in value.split(" ") {
             // write each word
-            ctx.write(word, 1);
+            ctx.write_fmt(word, 1);
         }
     }
 }

@@ -14,16 +14,16 @@ struct WordcountReducer;
 // Reducing stage implementation.
 impl Reducer for WordcountReducer {
     /// Reduction implementation for the word counter example.
-    fn reduce(&mut self, key: String, values: Vec<String>, ctx: &mut Context) {
+    fn reduce(&mut self, key: &[u8], values: &[&[u8]], ctx: &mut Context) {
         // base counter
         let mut count = 0;
 
         for value in values {
-            // sum all values to obtain total appearances
-            count += value.parse::<usize>().unwrap();
+            // parse each value sum them all to obtain total appearances
+            count += std::str::from_utf8(value).unwrap().parse::<usize>().unwrap();
         }
 
-        // write the word and the total count
-        ctx.write(key, count);
+        // write the word and the total count as bytes
+        ctx.write(key, count.to_string().as_bytes());
     }
 }
