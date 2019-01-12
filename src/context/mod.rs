@@ -47,7 +47,6 @@
 //!
 //! - `Configuration`
 //! - `Delimiters`
-//! - `Group`
 //! - `Offset`
 //!
 //! The most interesting of these types is the `Configuration` type, as it
