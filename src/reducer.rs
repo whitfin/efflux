@@ -36,6 +36,7 @@ where
     R: FnMut(&[u8], &[&[u8]], &mut Context),
 {
     /// Reduction handler by passing through the values to the inner closure.
+    #[inline]
     fn reduce(&mut self, key: &[u8], value: &[&[u8]], ctx: &mut Context) {
         self(key, value, ctx)
     }
@@ -74,6 +75,7 @@ where
     R: Reducer,
 {
     /// Creates all required state for the lifecycle.
+    #[inline]
     fn on_start(&mut self, ctx: &mut Context) {
         self.reducer.setup(ctx);
     }
@@ -130,6 +132,7 @@ where
     }
 
     /// Finalizes the lifecycle by emitting any leftover pairs.
+    #[inline]
     fn on_end(&mut self, ctx: &mut Context) {
         // construct a references list to avoid exposing vecs
         let mut values = Vec::with_capacity(self.values.len());

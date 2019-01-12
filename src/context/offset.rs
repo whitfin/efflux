@@ -17,6 +17,7 @@ impl Offset {
     /// Shifts the inner offset by the provided shift value.Reducer
     ///
     /// The newly shifted offset is then returned, for convenience.
+    #[inline]
     pub fn shift(&mut self, shift: usize) -> usize {
         self.0 += shift;
         self.0

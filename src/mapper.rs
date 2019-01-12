@@ -34,6 +34,7 @@ where
     M: FnMut(usize, &[u8], &mut Context),
 {
     /// Mapping handler by passing through the values to the inner closure.
+    #[inline]
     fn map(&mut self, key: usize, value: &[u8], ctx: &mut Context) {
         self(key, value, ctx)
     }
@@ -64,6 +65,7 @@ where
     M: Mapper,
 {
     /// Creates all required state for the lifecycle.
+    #[inline]
     fn on_start(&mut self, ctx: &mut Context) {
         ctx.insert(Offset::new());
         self.mapper.setup(ctx);
@@ -73,6 +75,7 @@ where
     /// byte offset being provided as the key (this follows the implementation
     /// provided in the Hadoop MapReduce Java interfaces, but it's unclear as
     /// to whether this is the desired default behaviour here).
+    #[inline]
     fn on_entry(&mut self, input: &[u8], ctx: &mut Context) {
         let offset = {
             // grabs the offset from the context, and shifts the offset
@@ -83,6 +86,7 @@ where
     }
 
     /// Finalizes the lifecycle by calling cleanup.
+    #[inline]
     fn on_end(&mut self, ctx: &mut Context) {
         self.mapper.cleanup(ctx);
     }

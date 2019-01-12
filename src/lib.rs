@@ -24,6 +24,7 @@ use self::reducer::ReducerLifecycle;
 use self::io::run_lifecycle;
 
 /// Executes a `Mapper` against the current `stdin`.
+#[inline]
 pub fn run_mapper<M>(mapper: M)
 where
     M: Mapper + 'static,
@@ -32,6 +33,7 @@ where
 }
 
 /// Executes a `Reducer` against the current `stdin`.
+#[inline]
 pub fn run_reducer<R>(reducer: R)
 where
     R: Reducer + 'static,

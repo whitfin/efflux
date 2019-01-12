@@ -144,6 +144,7 @@ impl Context {
     }
 
     /// Writes a key/value pair to the stage output.
+    #[inline]
     pub fn write(&mut self, key: &[u8], val: &[u8]) {
         // grab a reference to the context output delimiters
         let out = self.get::<Delimiters>().unwrap().output();
@@ -163,6 +164,7 @@ impl Context {
     ///
     /// This is a simple sugar API around `write` which allows callers to
     /// provide a type which implements `Display` to serialize automatically.
+    #[inline]
     pub fn write_fmt<K, V>(&mut self, key: K, val: V)
     where
         K: Display,
