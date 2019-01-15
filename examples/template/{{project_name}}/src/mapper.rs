@@ -1,5 +1,4 @@
 //! `Mapper` implementation for the {{project_name}} project.
-extern crate efflux;
 use efflux::prelude::*;
 
 {% set project_clean = project_name | slugify | title | split(pat="-") | join(sep="") -%}
