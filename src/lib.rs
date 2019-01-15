@@ -54,6 +54,7 @@ pub mod prelude {
     //!
     //! The prelude may grow over time, but it is unlikely to shrink.
     pub use super::context::{Configuration, Context, Contextual};
+    pub use super::log;
     pub use super::mapper::Mapper;
     pub use super::reducer::Reducer;
 }

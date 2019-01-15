@@ -2,6 +2,7 @@
 name = "efflux_example_wordcount"
 version = "0.1.0"
 authors = ["Isaac Whitfield <iw@whitfin.io>"]
+edition = "2018"
 
 [dependencies]
 efflux = { path = "../../" }

@@ -1,6 +1,7 @@
 [package]
 name = "{{ project_name }}"
 version = "{{ project_version }}"
+edition = "2018"
 
 [dependencies]
 efflux = "2.0"
