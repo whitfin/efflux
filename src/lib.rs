@@ -7,7 +7,7 @@
 //!
 //! Macros are provided for IO, to provide a compile-time guarantee of things
 //! such as counter/status updates, or writing to the Hadoop task logs.
-#![doc(html_root_url = "https://docs.rs/efflux/2.0.0")]
+#![doc(html_root_url = "https://docs.rs/efflux/2.0.1")]
 #[macro_use]
 pub mod macros;
 pub mod context;
