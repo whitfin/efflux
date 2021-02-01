@@ -7,7 +7,7 @@ use std::env;
 /// Internally this is simply a `String` -> `String` map, as
 /// we don't have enough information to parse with. The struct
 /// implementation exists as a compatibility layer.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Configuration {
     inner: HashMap<String, String>,
 }
@@ -49,7 +49,7 @@ impl Configuration {
     /// Retrieves a potential `Configuration` value.
     pub fn get(&self, key: &str) -> Option<&str> {
         // shimming for hadoop
-        let opt = if key.contains(".") {
+        let opt = if key.contains('.') {
             self.inner.get(&key.replace(".", "_"))
         } else {
             self.inner.get(key)
@@ -68,7 +68,7 @@ impl Configuration {
         let mut key_str = key.into();
 
         // hadoop compatibility
-        if key_str.contains(".") {
+        if key_str.contains('.') {
             key_str = key_str.replace(".", "_");
         }
 

@@ -5,7 +5,7 @@
 /// This offers little more than abstraction over the byte
 /// offset being tracked manually; however the strong typing
 /// allows `Offset` to be added to a `Context`.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Offset(usize);
 
 impl Offset {

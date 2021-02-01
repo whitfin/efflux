@@ -77,9 +77,9 @@ impl Contextual for Offset {}
 /// This acts as an arbitrarily-typed bag, allowing for easy storage
 /// of random types between iterations of the stage. See the module
 /// documentation for further details and examples.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Context {
-    data: HashMap<TypeId, Box<Any>>,
+    data: HashMap<TypeId, Box<dyn Any>>,
 }
 
 impl Context {
