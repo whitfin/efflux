@@ -1,5 +1,5 @@
 # Efflux
-[![Crates.io](https://img.shields.io/crates/v/efflux.svg)](https://crates.io/crates/efflux) [![Build Status](https://img.shields.io/travis/whitfin/efflux.svg)](https://travis-ci.org/whitfin/efflux)
+[![Crates.io](https://img.shields.io/crates/v/efflux.svg)](https://crates.io/crates/efflux) [![Build Status](https://img.shields.io/github/workflow/status/whitfin/efflux/CI)](https://github.com/whitfin/efflux/actions)
 
 Efflux is a set of Rust interfaces for MapReduce and Hadoop Streaming. It enables Rust developers to run batch jobs on Hadoop infrastructure whilst staying with the efficiency and safety they're used to.
 
