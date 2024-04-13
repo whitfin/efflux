@@ -15,5 +15,5 @@ appveyor = { repository = "whitfin/efflux" }
 travis-ci = { repository = "whitfin/efflux" }
 
 [dependencies]
-bytelines = "2.2"
+bytelines = "2.5"
 twoway = "0.2"
