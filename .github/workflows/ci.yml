@@ -8,44 +8,30 @@ on:
 
 jobs:
   build:
-    name: Rust (${{ matrix.rust }}) (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
+    name: Rust ${{ matrix.channel }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
-        rust:
+        channel:
           - stable
           - beta
           - nightly
-
     steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
-          toolchain: ${{ matrix.rust }}
-          override: true
-          components: rustfmt, clippy
+          toolchain: ${{ matrix.channel }}
 
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
+      - name: Run Build
+        run: cargo build
 
-      - uses: actions-rs/cargo@v1
-        with:
-          command: test
+      - name: Run Tests
+        run: cargo test
 
-      - uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+      - name: Run Format
+        run: cargo --all -- --check
 
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --all --all-features --profile test
+      - name: Run Clippy
+        run: cargo --all --all-features --profile test
+
