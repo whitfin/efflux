@@ -30,8 +30,8 @@ jobs:
         run: cargo test
 
       - name: Run Format
-        run: cargo --all -- --check
+        run: cargo fmt --all -- --check
 
       - name: Run Clippy
-        run: cargo --all --all-features --profile test
+        run: cargo clippy --all --all-features --profile test
 
